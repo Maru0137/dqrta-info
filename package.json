@@ -8,12 +8,13 @@
     "dev": "nuxt-ts",
     "build": "nuxt-ts build",
     "generate": "nuxt-ts generate",
-    "start": "nuxt-ts start"
+    "start": "nuxt-ts start",
+    "deploy": "push-dir --dir=dist --branch=gh-pages"
   },
   "dependencies": {
     "@nuxt/typescript-runtime": "^0.4.0",
     "chart.js": "^2.9.3",
-    "dq3": "file:../../.ghq/github.com/Maru0137/dq3sim/pkg",
+    "dq3": "file:../dq3sim/pkg",
     "moment": "2.18.1",
     "nuxt": "^2.0.0",
     "vue-chartjs": "^3.5.0"
@@ -21,6 +22,8 @@
   "devDependencies": {
     "@nuxt/typescript-build": "^0.6.0",
     "@nuxtjs/vuetify": "^1.0.0",
-    "@types/chart.js": "^2.9.20"
+    "@types/chart.js": "^2.9.20",
+    "gh-pages": "^2.2.0",
+    "push-dir": "^0.4.1"
   }
 }
