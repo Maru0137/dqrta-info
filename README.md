@@ -1,6 +1,6 @@
 # dqrta-info
 
-> The webpage for DQRTA infomation
+> The web-page for DQRTA infomations
 
 ## Build Setup
 
