@@ -37,7 +37,15 @@
     <v-app-bar color="primary" clipped-left fixed app dark>
       <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
       <v-toolbar-title v-text="title" />
+
       <v-spacer />
+
+      <v-btn icon href="https://github.com/Maru0137/dqrta-info">
+        <v-icon>mdi-github</v-icon>
+      </v-btn>
+      <v-btn icon href="https://twitter.com/Maru0137">
+        <v-icon>mdi-twitter</v-icon>
+      </v-btn>
     </v-app-bar>
     <!-- <v-breadcrumbs items="breadcrumbs" /> -->
     <v-content>
