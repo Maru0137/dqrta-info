@@ -40,8 +40,6 @@
                       required
                     ></v-text-field>
                   </v-col>
-                </v-row>
-                <v-row>
                   <v-col cols="4">
                     <v-text-field
                       v-model.number="sample"

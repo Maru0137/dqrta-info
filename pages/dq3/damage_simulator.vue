@@ -10,54 +10,49 @@
                 <v-row>
                   <v-col cols="4">
                     <v-text-field
-                      v-model.number="upper"
-                      label="Upper value in a trial"
+                      v-model.number="atk"
+                      label="攻撃力"
                       type="number"
                       :min="0"
-                      :max="255"
-                      :rules="inboundRules(upper, 0, 255)"
+                      :max="65535"
+                      :rules="inboundRules(atk, 0, 65535)"
                       required
                     ></v-text-field>
                   </v-col>
                   <v-col cols="4">
                     <v-text-field
-                      v-model.number="trial"
-                      label="The number of trials"
-                      type="number"
-                      :min="1"
-                      :rules="inboundRules(trial, 1)"
-                      required
-                    ></v-text-field>
-                  </v-col>
-                  <v-col cols="4">
-                    <v-text-field
-                      v-model.number="offset"
-                      label="offset value"
+                      v-model.number="def"
+                      label="守備力"
                       type="number"
                       :min="0"
-                      :max="255"
-                      :rules="inboundRules(offset, 0, 255)"
+                      :max="65535"
+                      :rules="inboundRules(def, 0, 65535)"
                       required
                     ></v-text-field>
                   </v-col>
-                </v-row>
-                <v-row>
                   <v-col cols="4">
                     <v-text-field
                       v-model.number="sample"
-                      label="The number of samples"
+                      label="サンプル数"
                       type="number"
                       :min="1"
                       :rules="inboundRules(sample, 1)"
                       required
                     ></v-text-field>
                   </v-col>
+                  <v-col cols="4">
+                    <v-checkbox v-model="twinhits" label="バイキルト" dense></v-checkbox>
+                  </v-col>
+                  <v-col cols="4">
+                    <v-checkbox v-model="defence" label="防御" dense></v-checkbox>
+                  </v-col>
+                  <v-col cols="4">
+                    <v-checkbox v-model="byMonster" label="モンスターの攻撃" dense></v-checkbox>
+                  </v-col>
+                </v-row>
+                <v-row>
                   <v-col cols="6">
-                    <v-btn
-                      color="success"
-                      @click="simulateHistogram"
-                      :disabled="!validForm"
-                    >Simulate</v-btn>
+                    <v-btn color="success" @click="simulateDamage" :disabled="!validForm">Simulate</v-btn>
                   </v-col>
                 </v-row>
               </v-form>
@@ -93,34 +88,49 @@ export default Vue.extend({
   data() {
     return {
       validForm: true,
-      upper: 0xff,
-      trial: 1,
-      offset: 0,
+      atk: 360,
+      def: 110,
       sample: 1000000,
+      twinhits: false,
+      defence: false,
+      byMonster: false,
+      labels: new Array<string>(),
       dists: new Array<number>()
     };
   },
   methods: {
-    simulateHistogram() {
-      const modulo = 256;
-      const bin_num = Math.min(modulo, this.upper * this.trial + 1);
-      let histogram = new Array<number>(bin_num).fill(0);
+    simulateDamage() {
+      let battle = new dq3.Battle(dq3.Rng.init());
+      let histogram: { [value: number]: number } = {};
+      let attacker = this.byMonster
+        ? dq3.Character.Monster
+        : dq3.Character.Player;
 
-      let rng = dq3.Rng.init();
       for (let i = 0; i < this.sample; ++i) {
-        let rng_in_sample = rng;
+        const damage = battle.physical_damage(
+          this.atk,
+          this.def,
+          this.twinhits,
+          attacker
+        );
 
-        let sum: number = this.offset as number;
-        for (let j = 0; j < this.trial; ++j) {
-          sum += rng_in_sample.rand_by_multiply(this.upper);
+        if (!histogram[damage]) {
+          histogram[damage] = 0;
         }
-
-        const ans = sum % modulo;
-        histogram[ans] += 1;
-        rng.rand();
+        histogram[damage] += 1;
       }
 
-      this.dists = histogram.map(v => (v / this.sample) * 100);
+      let keys = Object.keys(histogram).map(v => Number.parseInt(v));
+      let values = Object.values(histogram);
+
+      const min = keys.reduce((acc, v) => Math.min(acc, v));
+      const max = keys.reduce((acc, v) => Math.max(acc, v));
+      const extent = max - min + 1;
+
+      this.labels = [...Array(extent).keys()].map(v => (min + v).toFixed());
+      this.dists = [...Array(extent).keys()].map(
+        v => ((histogram[min + v] ? histogram[min + v] : 0) / this.sample) * 100
+      );
     },
 
     inboundRules(
@@ -138,7 +148,7 @@ export default Vue.extend({
 
     chartData(): Chart.ChartData {
       return {
-        labels: [...this.dists.keys()],
+        labels: this.labels,
         datasets: [
           {
             label: "Probability",
