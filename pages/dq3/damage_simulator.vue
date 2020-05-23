@@ -43,9 +43,9 @@
                   <v-col cols="4">
                     <v-checkbox v-model="twinhits" label="バイキルト" dense></v-checkbox>
                   </v-col>
-                  <v-col cols="4">
+                  <!-- <v-col cols="4">
                     <v-checkbox v-model="defence" label="防御" dense></v-checkbox>
-                  </v-col>
+                  </v-col>-->
                   <v-col cols="4">
                     <v-checkbox v-model="byMonster" label="モンスターの攻撃" dense></v-checkbox>
                   </v-col>
