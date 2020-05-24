@@ -93,13 +93,11 @@ export default Vue.extend({
     bread(): Object[] {
       const route: string = this.$route.path;
       const splited = route.split("/").slice(1);
-      console.log(splited);
       const items = splited.map(str => {
         return {
           text: str
         };
       });
-      console.log(items);
       return items;
     }
   }
