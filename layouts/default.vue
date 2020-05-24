@@ -47,18 +47,21 @@
         <v-icon>mdi-twitter</v-icon>
       </v-btn>
     </v-app-bar>
-    <!-- <v-breadcrumbs items="breadcrumbs" /> -->
     <v-content>
       <v-container>
+        <v-breadcrumbs :items="bread" />
         <nuxt />
       </v-container>
     </v-content>
   </v-app>
 </template>
 
-<script>
-export default {
+<script lang="ts">
+import Vue, { PropOptions } from "vue";
+
+export default Vue.extend({
   data() {
+    console.log(this.$route.matched);
     return {
       drawer: false,
       fixed: false,
@@ -84,6 +87,21 @@ export default {
       miniVariant: false,
       title: "Dragon Quest RTA Tools"
     };
+  },
+
+  computed: {
+    bread(): Object[] {
+      const route: string = this.$route.path;
+      const splited = route.split("/").slice(1);
+      console.log(splited);
+      const items = splited.map(str => {
+        return {
+          text: str
+        };
+      });
+      console.log(items);
+      return items;
+    }
   }
-};
+});
 </script>
