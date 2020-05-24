@@ -1,6 +1,7 @@
 <template>
   <v-layout column justify-center align-centor>
     <v-container fluiid>
+      <h1>Rand Simulator</h1>
       <v-row>
         <v-col>
           <v-card>
