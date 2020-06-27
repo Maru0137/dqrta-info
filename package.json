@@ -12,9 +12,10 @@
     "deploy": "push-dir --dir=dist --branch=gh-pages --cleanup"
   },
   "dependencies": {
+    "@maru0137/dq3": "^0.2.0",
+    "@maru0137/ps2dq5": "../ps2dq5-sim/pkg",
     "@nuxt/typescript-runtime": "^0.4.0",
     "chart.js": "^2.9.3",
-    "@maru0137/dq3": "^0.2.0",
     "mersenne-twister": "^1.1.0",
     "nuxt": "^2.0.0",
     "vue-chartjs": "^3.5.0"

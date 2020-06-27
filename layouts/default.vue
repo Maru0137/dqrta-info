@@ -82,6 +82,18 @@ export default Vue.extend({
               to: "/dq3/damage_simulator"
             }
           ]
+        },
+        {
+          title: "PS2 Dragon Quest 5",
+          to: "",
+          active: false,
+          lists: [
+            {
+              title: "Encount Simulator",
+              icon: "mdi-chart-bell-curve",
+              to: "/ps2dq5/encount_simulator"
+            }
+          ]
         }
       ],
       miniVariant: false,
